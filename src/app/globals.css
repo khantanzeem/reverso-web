@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+
+html { scroll-behavior: smooth; }
+body { @apply bg-white text-ink antialiased; }
+
+.font-heading {
+  font-family: var(--font-heading), var(--font-inter), system-ui, sans-serif;
+}
+h1, h2, h3, h4 {
+  font-family: var(--font-heading), var(--font-inter), system-ui, sans-serif;
+  @apply tracking-tight;
+}
+
+.container-x { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
+
+.input {
+  @apply w-full rounded-lg border border-black/10 bg-white px-4 py-2.5 text-sm text-ink
+    outline-none transition-all duration-200 placeholder:text-ink/40
+    focus:border-signal focus:ring-4 focus:ring-signal/15;
+}
+.btn {
+  @apply relative inline-flex items-center justify-center overflow-hidden rounded-md px-5 py-2.5
+    text-sm font-semibold transition-all duration-300 will-change-transform;
+}
+.btn-primary {
+  @apply bg-signal text-navy shadow-md shadow-signal/20 hover:-translate-y-0.5 hover:bg-signal-600 hover:shadow-lg hover:shadow-signal/30 active:translate-y-0;
+}
+.btn-ghost {
+  @apply border border-white/30 text-white hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/10 active:translate-y-0;
+}
+.prose-body :where(p) { @apply mb-4 leading-relaxed; }
+.prose-body :where(h2) { @apply mt-8 mb-3 text-2xl font-bold text-navy; }
+.prose-body :where(ul) { @apply mb-4 list-disc pl-6; }
+.prose-body :where(p.lede) {
+  @apply mb-6 text-lg font-medium leading-relaxed text-navy sm:text-xl;
+}
+
+/* ---- Decorative helpers ---- */
+.blob {
+  @apply pointer-events-none absolute rounded-full opacity-20 blur-2xl;
+  will-change: auto;
+}
+
+.card-hover {
+  @apply transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-navy/10;
+}
+
+.nav-link {
+  @apply relative text-sm font-medium text-ink transition-colors hover:text-signal-600;
+}
+.nav-link::after {
+  content: "";
+  @apply absolute -bottom-1 left-0 h-0.5 w-0 bg-signal transition-all duration-300;
+}
+.nav-link:hover::after { @apply w-full; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .card-hover { transition: none !important; }
+}
