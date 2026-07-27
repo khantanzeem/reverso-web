@@ -1,12 +1,16 @@
 import ContactForm from "../components/ContactForm";
-import { getSiteSettings } from "@/lib/content";
+import { getSiteSettings, getCourses } from "@/lib/content";
 import FadeUp from "../components/FadeUp";
 import Reveal from "../components/Reveal";
 
 export const metadata = { title: "Contact — Reverso Solutions" };
 
-export default async function ContactPage() {
-  const settings = await getSiteSettings();
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: { course?: string };
+}) {
+  const [settings, courses] = await Promise.all([getSiteSettings(), getCourses()]);
   return (
     <>
       <header className="relative overflow-hidden bg-navy py-14 text-white">
@@ -32,10 +36,10 @@ export default async function ContactPage() {
           </div>
         </Reveal>
         <Reveal delay={100}>
-          <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm sm:p-8">
+          <div id="demo" className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm sm:p-8">
             <h2 className="text-xl font-semibold text-navy">Book a free demo</h2>
             <div className="mt-6">
-              <ContactForm type="free-demo" />
+              <ContactForm type="free-demo" courses={courses} defaultCourseSlug={searchParams.course} />
             </div>
             {settings && (
               <div className="mt-8 rounded-xl bg-mist p-6 text-sm text-ink/80">

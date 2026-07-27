@@ -3,10 +3,21 @@
 import { useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import type { Course } from "@/lib/types";
 
 type FormType = "contact" | "free-demo";
 
-export default function ContactForm({ type = "contact" }: { type?: FormType }) {
+export default function ContactForm({
+  type = "contact",
+  courses = [],
+  defaultCourseSlug,
+}: {
+  type?: FormType;
+  /** Course list to populate the "Which course?" dropdown on the free-demo form. */
+  courses?: Pick<Course, "id" | "slug" | "title">[];
+  /** Pre-select a course, e.g. when arriving from a course's "Enquire / Enroll" link. */
+  defaultCourseSlug?: string;
+}) {
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">(
     "idle"
   );
@@ -22,12 +33,15 @@ export default function ContactForm({ type = "contact" }: { type?: FormType }) {
       return;
     }
 
+    const courseSlug = String(f.get("course") || "");
+    const course = courses.find((c) => c.slug === courseSlug);
+
     const payload = {
       type,
       name: String(f.get("name") || ""),
       email: String(f.get("email") || ""),
       phone: String(f.get("phone") || ""),
-      course: String(f.get("course") || ""),
+      course: course?.title || courseSlug,
       message: String(f.get("message") || ""),
       handled: false,
       createdAt: serverTimestamp(),
@@ -76,7 +90,25 @@ export default function ContactForm({ type = "contact" }: { type?: FormType }) {
       </div>
       <input name="email" type="email" required placeholder="Email" className="input" />
       {type === "free-demo" && (
-        <input name="course" placeholder="Which course?" className="input" />
+        <label className="grid gap-1.5 text-sm font-medium text-navy">
+          Which course?
+          <select
+            name="course"
+            required
+            defaultValue={defaultCourseSlug || ""}
+            className="input"
+          >
+            <option value="" disabled>
+              Select a course
+            </option>
+            {courses.map((c) => (
+              <option key={c.id} value={c.slug}>
+                {c.title}
+              </option>
+            ))}
+            <option value="not-sure">Not sure yet / general enquiry</option>
+          </select>
+        </label>
       )}
       <textarea name="message" rows={4} placeholder="Message" className="input resize-none" />
       <button type="submit" disabled={status === "sending"} className="btn btn-primary w-fit disabled:opacity-60">

@@ -82,7 +82,10 @@ export default async function CourseDetail({
                 </p>
               )}
               {/* Phase 1: enquiry. Phase 2: this becomes "Buy & watch" via the payment gateway. */}
-              <Link href="/contact" className="btn btn-primary mt-5 w-full">
+              <Link
+                href={`/contact?course=${course.slug}#demo`}
+                className="btn btn-primary mt-5 w-full"
+              >
                 Enquire / Enroll
               </Link>
               <ul className="mt-6 space-y-2.5 border-t border-black/5 pt-5 text-sm text-ink/70">

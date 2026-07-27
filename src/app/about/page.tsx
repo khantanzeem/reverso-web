@@ -59,7 +59,7 @@ export default async function AboutPage() {
   return (
     <article>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy pb-48 pt-16 text-white sm:pb-64 sm:pt-20">
+      <section className="relative overflow-hidden bg-navy py-16 text-white sm:py-20">
         <div className="blob -right-10 -top-10 h-56 w-56 bg-signal" />
         <div className="blob -left-16 bottom-0 h-64 w-64 bg-signal-600" />
         <div className="container-x relative">
@@ -75,26 +75,6 @@ export default async function AboutPage() {
           </FadeUp>
         </div>
       </section>
-
-      {/* Video, overlapping the hero/white boundary */}
-      {page?.videoUrl && (
-        <div className="container-x -mt-32 sm:-mt-48">
-          <Reveal>
-            <div className="relative mx-auto max-w-4xl">
-              <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-tr from-signal/30 via-signal/10 to-transparent blur-2xl" />
-              <div className="aspect-video overflow-hidden rounded-2xl border border-black/5 bg-navy shadow-2xl shadow-navy/20">
-                <iframe
-                  src={page.videoUrl}
-                  title="About Reverso Solutions"
-                  className="h-full w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      )}
 
       {/* Stats */}
       <div className="container-x py-16">
@@ -122,13 +102,28 @@ export default async function AboutPage() {
               </div>
             </Reveal>
             <Reveal delay={100}>
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg shadow-navy/10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=80"
-                  alt=""
-                  className="h-full w-full object-cover"
-                />
+              <div className="relative">
+                <div className="absolute -inset-4 -z-10 rounded-[1.75rem] bg-gradient-to-tr from-signal/25 via-signal/10 to-transparent blur-2xl" />
+                {page.videoUrl ? (
+                  <div className="aspect-video overflow-hidden rounded-2xl border border-black/5 bg-navy shadow-xl shadow-navy/15">
+                    <iframe
+                      src={page.videoUrl}
+                      title="About Reverso Solutions"
+                      className="h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-lg shadow-navy/10">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=80"
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                )}
               </div>
             </Reveal>
           </div>
