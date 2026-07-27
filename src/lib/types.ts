@@ -11,6 +11,21 @@ export interface SiteSettings {
   instagram: string;
   youtube: string;
   linkedin: string;
+  /** Per-section visibility toggles for the homepage. Missing/undefined defaults to shown. */
+  sections?: {
+    hero?: boolean;
+    services?: boolean;
+    courses?: boolean;
+    staffing?: boolean;
+    testimonials?: boolean;
+  };
+  /** Per-link visibility toggles for the header/mobile nav. Missing/undefined defaults to shown. */
+  nav?: {
+    about?: boolean;
+    services?: boolean;
+    courses?: boolean;
+    contact?: boolean;
+  };
 }
 
 export interface Banner {
@@ -31,6 +46,16 @@ export interface Service {
   bodyHtml: string;
   slug: string;
   order: number;
+  active: boolean;
+}
+
+export interface StaffingSolution {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  order: number;
+  active: boolean;
 }
 
 export interface Course {

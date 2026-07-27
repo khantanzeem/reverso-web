@@ -27,6 +27,21 @@ async function run() {
     instagram: "https://www.instagram.com/reverso_solutions/",
     youtube: "https://www.youtube.com/@reversosolutions7982",
     linkedin: "https://www.linkedin.com/company/reverso-solutions-pvt-ltd",
+    // Toggle any homepage section on/off without touching code.
+    sections: {
+      hero: true,
+      services: true,
+      courses: true,
+      staffing: true,
+      testimonials: true,
+    },
+    // Toggle any header/mobile nav link on/off without touching code.
+    nav: {
+      about: true,
+      services: true,
+      courses: true,
+      contact: true,
+    },
   });
 
   await set("banners", "slide1", {
@@ -64,6 +79,34 @@ async function run() {
     await set("services", slug, {
       slug, title, excerpt, image, order: i + 1,
       bodyHtml: `<p>${excerpt}</p>`,
+      active: true,
+    });
+  }
+
+  const staffingSolutions = [
+    [
+      "career-counseling",
+      "Career Counseling",
+      "We help freshers and young professionals choose and plan the right career path, with guidance from people who've hired for it.",
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1000&q=80",
+    ],
+    [
+      "hire-on-contract",
+      "Hire on Contract",
+      "A ready bench of vetted, experienced professionals across sectors, available to join your payroll and start delivering fast.",
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1000&q=80",
+    ],
+    [
+      "hire-an-expert",
+      "Hire an Expert",
+      "Need a specific skill set for a critical role? We source and screen niche experts so you only meet candidates worth interviewing.",
+      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1000&q=80",
+    ],
+  ];
+  for (let i = 0; i < staffingSolutions.length; i++) {
+    const [id, title, description, image] = staffingSolutions[i];
+    await set("staffingSolutions", id, {
+      title, description, image, order: i + 1, active: true,
     });
   }
 

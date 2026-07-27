@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
 import {
+  getSiteSettings,
   getBanners,
   getServices,
   getCourses,
   getTestimonials,
+  getStaffingSolutions,
 } from "@/lib/content";
 import Reveal from "./components/Reveal";
 import StaggerCards, { type StaggerCardItem } from "./components/StaggerCards";
@@ -18,44 +20,21 @@ const STAFFING_HIGHLIGHTS = [
   "Screening, background checks, and offer support included",
 ];
 
-const STAFFING_SOLUTIONS = [
-  {
-    id: "career-counseling",
-    title: "Career Counseling",
-    description:
-      "We help freshers and young professionals choose and plan the right career path, with guidance from people who've hired for it.",
-    image:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1000&q=80",
-  },
-  {
-    id: "hire-on-contract",
-    title: "Hire on Contract",
-    description:
-      "A ready bench of vetted, experienced professionals across sectors, available to join your payroll and start delivering fast.",
-    image:
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1000&q=80",
-  },
-  {
-    id: "hire-an-expert",
-    title: "Hire an Expert",
-    description:
-      "Need a specific skill set for a critical role? We source and screen niche experts so you only meet candidates worth interviewing.",
-    image:
-      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1000&q=80",
-  },
-];
-
 export default async function HomePage() {
-  const [banners, services, courses, testimonials] = await Promise.all([
-    getBanners(),
-    getServices(),
-    getCourses(),
-    getTestimonials(),
-  ]);
+  const [settings, banners, services, courses, testimonials, staffingSolutions] =
+    await Promise.all([
+      getSiteSettings(),
+      getBanners(),
+      getServices(),
+      getCourses(),
+      getTestimonials(),
+      getStaffingSolutions(),
+    ]);
 
+  const sections = settings?.sections;
   const staffing = services.find((s) => s.slug === "staffing-services");
 
-  const staffingSlides: SlideItem[] = STAFFING_SOLUTIONS.map((s) => ({
+  const staffingSlides: SlideItem[] = staffingSolutions.map((s) => ({
     id: s.id,
     content: (
       <div className="grid overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm sm:h-80 sm:grid-cols-2">
@@ -113,18 +92,21 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy text-white">
-        <div className="blob -left-24 -top-24 h-72 w-72 bg-signal" />
-        <div className="blob -right-16 top-1/3 h-96 w-96 bg-signal-600" />
-        <div className="blob bottom-0 left-1/3 h-64 w-64 bg-white" />
+      {sections?.hero !== false && (
+        <section className="relative overflow-hidden bg-navy text-white">
+          <div className="blob -left-24 -top-24 h-72 w-72 bg-signal" />
+          <div className="blob -right-16 top-1/3 h-96 w-96 bg-signal-600" />
+          <div className="blob bottom-0 left-1/3 h-64 w-64 bg-white" />
 
-        <HeroSlider banners={banners} />
+          <HeroSlider banners={banners} />
 
-        {/* subtle bottom fade into next section */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white/5 to-transparent" />
-      </section>
+          {/* subtle bottom fade into next section */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white/5 to-transparent" />
+        </section>
+      )}
 
       {/* Services */}
+      {sections?.services !== false && (
       <section className="container-x py-16">
         <Reveal>
           <h2 className="text-2xl font-bold text-navy">Our Services</h2>
@@ -163,8 +145,10 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+      )}
 
       {/* Courses */}
+      {sections?.courses !== false && (
       <section className="relative overflow-hidden bg-mist py-16">
         <div className="container-x relative">
           <Reveal>
@@ -211,9 +195,10 @@ export default async function HomePage() {
           </Reveal>
         </div>
       </section>
+      )}
 
       {/* Staffing Services spotlight */}
-      {staffing && (
+      {sections?.staffing !== false && staffing && (
         <section className="container-x py-16">
           <Reveal>
             <div className="grid items-center gap-10 lg:grid-cols-2">
@@ -266,6 +251,7 @@ export default async function HomePage() {
       )}
 
       {/* Testimonials */}
+      {sections?.testimonials !== false && (
       <section className="container-x py-16">
         <Reveal>
           <h2 className="text-2xl font-bold text-navy">What people say</h2>
@@ -274,6 +260,7 @@ export default async function HomePage() {
           <StaggerCards items={testimonialCards} height={480} />
         </Reveal>
       </section>
+      )}
     </>
   );
 }

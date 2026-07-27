@@ -5,15 +5,9 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuthUser } from "./useAuthUser";
 
-const nav = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Courses", href: "/courses" },
-  { label: "Contact", href: "/contact" },
-];
+type NavItem = { label: string; href: string };
 
-export default function MobileNav() {
+export default function MobileNav({ nav }: { nav: readonly NavItem[] }) {
   const [open, setOpen] = useState(false);
   const { user } = useAuthUser();
 
@@ -52,6 +46,13 @@ export default function MobileNav() {
             className="fixed inset-x-0 top-[var(--header-h,96px)] z-30 border-b border-black/5 bg-white shadow-lg"
           >
             <nav className="container-x flex flex-col gap-1 py-4">
+              <Link
+                href="/"
+                onClick={() => setOpen(false)}
+                className="rounded-md px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-mist hover:text-signal-600"
+              >
+                Home
+              </Link>
               {nav.map((n) => (
                 <Link
                   key={n.href}

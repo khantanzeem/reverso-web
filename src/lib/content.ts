@@ -15,6 +15,7 @@ import type {
   SiteSettings,
   Banner,
   Service,
+  StaffingSolution,
   Course,
   Testimonial,
   Page,
@@ -41,8 +42,23 @@ export async function getBanners(): Promise<Banner[]> {
 }
 
 export async function getServices(): Promise<Service[]> {
-  const snap = await getDocs(query(collection(db, "services"), orderBy("order")));
+  const q = query(
+    collection(db, "services"),
+    where("active", "==", true),
+    orderBy("order")
+  );
+  const snap = await getDocs(q);
   return snap.docs.map((d) => withId<Service>(d));
+}
+
+export async function getStaffingSolutions(): Promise<StaffingSolution[]> {
+  const q = query(
+    collection(db, "staffingSolutions"),
+    where("active", "==", true),
+    orderBy("order")
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => withId<StaffingSolution>(d));
 }
 
 export async function getCourses(): Promise<Course[]> {

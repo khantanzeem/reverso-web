@@ -94,7 +94,14 @@ export default function HeroSlider({ banners }: { banners: Banner[] }) {
             >
               <div className="absolute -inset-4 rounded-2xl bg-gradient-to-tr from-signal/30 to-transparent blur-2xl" />
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl shadow-2xl">
-                <WaterRippleImage src={slide.image} />
+                <WaterRippleImage
+                  src={slide.image}
+                  blueish={0.25}
+                  scale={5}
+                  illumination={0.035}
+                  surfaceDistortion={0.012}
+                  waterDistortion={0.006}
+                />
               </div>
             </motion.div>
           </AnimatePresence>

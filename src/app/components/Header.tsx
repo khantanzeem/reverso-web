@@ -3,15 +3,17 @@ import type { SiteSettings } from "@/lib/types";
 import MobileNav from "./MobileNav";
 import AuthNav from "./AuthNav";
 
-const nav = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Courses", href: "/courses" },
-  { label: "Contact", href: "/contact" },
-];
+const ALL_NAV = [
+  { key: "about", label: "About", href: "/about" },
+  { key: "services", label: "Services", href: "/services" },
+  { key: "courses", label: "Courses", href: "/courses" },
+  { key: "contact", label: "Contact", href: "/contact" },
+] as const;
 
 export default function Header({ settings }: { settings: SiteSettings | null }) {
+  const navConfig = settings?.nav;
+  const nav = ALL_NAV.filter((n) => navConfig?.[n.key] !== false);
+
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/90 backdrop-blur">
       {settings && (
@@ -37,6 +39,9 @@ export default function Header({ settings }: { settings: SiteSettings | null }) 
           REVERSO<span className="text-signal">.</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
+          <Link href="/" className="nav-link">
+            Home
+          </Link>
           {nav.map((n) => (
             <Link key={n.href} href={n.href} className="nav-link">
               {n.label}
@@ -44,7 +49,7 @@ export default function Header({ settings }: { settings: SiteSettings | null }) 
           ))}
           <AuthNav />
         </nav>
-        <MobileNav />
+        <MobileNav nav={nav} />
       </div>
     </header>
   );
