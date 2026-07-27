@@ -3,16 +3,19 @@
 import Link from "next/link";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useAuthUser } from "./useAuthUser";
 
 const nav = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
   { label: "Courses", href: "/courses" },
   { label: "Contact", href: "/contact" },
 ];
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
+  const { user } = useAuthUser();
 
   return (
     <div className="md:hidden">
@@ -59,20 +62,32 @@ export default function MobileNav() {
                   {n.label}
                 </Link>
               ))}
-              <Link
-                href="/login"
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-mist hover:text-signal-600"
-              >
-                Login
-              </Link>
-              <Link
-                href="/signup"
-                onClick={() => setOpen(false)}
-                className="btn btn-primary mt-2"
-              >
-                Sign up
-              </Link>
+              {user ? (
+                <Link
+                  href="/profile"
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-mist hover:text-signal-600"
+                >
+                  Profile
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setOpen(false)}
+                    className="rounded-md px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-mist hover:text-signal-600"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setOpen(false)}
+                    className="btn btn-primary mt-2"
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
             </nav>
           </motion.div>
         )}

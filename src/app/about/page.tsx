@@ -59,7 +59,7 @@ export default async function AboutPage() {
   return (
     <article>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy py-16 text-white sm:py-20">
+      <section className="relative overflow-hidden bg-navy pb-48 pt-16 text-white sm:pb-64 sm:pt-20">
         <div className="blob -right-10 -top-10 h-56 w-56 bg-signal" />
         <div className="blob -left-16 bottom-0 h-64 w-64 bg-signal-600" />
         <div className="container-x relative">
@@ -78,7 +78,7 @@ export default async function AboutPage() {
 
       {/* Video, overlapping the hero/white boundary */}
       {page?.videoUrl && (
-        <div className="container-x -mt-16 sm:-mt-24">
+        <div className="container-x -mt-32 sm:-mt-48">
           <Reveal>
             <div className="relative mx-auto max-w-4xl">
               <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-tr from-signal/30 via-signal/10 to-transparent blur-2xl" />

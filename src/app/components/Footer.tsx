@@ -17,6 +17,7 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
         <div>
           <h4 className="mb-3 text-sm font-semibold text-white">Quick Links</h4>
           <ul className="space-y-2 text-sm">
+            <li><Link href="/services" className="inline-block transition-all hover:translate-x-1 hover:text-signal">Services</Link></li>
             <li><Link href="/courses" className="inline-block transition-all hover:translate-x-1 hover:text-signal">Courses</Link></li>
             <li><Link href="/about" className="inline-block transition-all hover:translate-x-1 hover:text-signal">About</Link></li>
             <li><Link href="/contact" className="inline-block transition-all hover:translate-x-1 hover:text-signal">Contact</Link></li>

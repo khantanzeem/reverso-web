@@ -1,10 +1,12 @@
 import Link from "next/link";
 import type { SiteSettings } from "@/lib/types";
 import MobileNav from "./MobileNav";
+import AuthNav from "./AuthNav";
 
 const nav = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
   { label: "Courses", href: "/courses" },
   { label: "Contact", href: "/contact" },
 ];
@@ -40,12 +42,7 @@ export default function Header({ settings }: { settings: SiteSettings | null }) 
               {n.label}
             </Link>
           ))}
-          <Link href="/login" className="nav-link">
-            Login
-          </Link>
-          <Link href="/signup" className="btn btn-primary">
-            Sign up
-          </Link>
+          <AuthNav />
         </nav>
         <MobileNav />
       </div>
