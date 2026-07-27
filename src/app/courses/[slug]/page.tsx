@@ -81,10 +81,21 @@ export default async function CourseDetail({
                   <Clock size={15} /> {course.duration}
                 </p>
               )}
-              {/* Phase 1: enquiry. Phase 2: this becomes "Buy & watch" via the payment gateway. */}
+              {course.price > 0 && (
+                <Link
+                  href={`/courses/${course.slug}/checkout`}
+                  className="btn btn-primary mt-5 w-full"
+                >
+                  Buy Now
+                </Link>
+              )}
               <Link
                 href={`/contact?course=${course.slug}#demo`}
-                className="btn btn-primary mt-5 w-full"
+                className={
+                  course.price > 0
+                    ? "mt-3 flex w-full items-center justify-center rounded-md border border-black/10 px-5 py-2.5 text-sm font-semibold text-navy transition-all hover:-translate-y-0.5 hover:bg-mist"
+                    : "btn btn-primary mt-5 w-full"
+                }
               >
                 Enquire / Enroll
               </Link>

@@ -12,7 +12,14 @@ import {
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 
-export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
+export default function AuthForm({
+  mode,
+  redirectTo = "/",
+}: {
+  mode: "login" | "signup";
+  /** Where to send the user after a successful login/signup. */
+  redirectTo?: string;
+}) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -32,7 +39,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
         },
         { merge: true }
       );
-      router.push("/");
+      router.push(redirectTo);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Google sign-in failed.");
     } finally {
@@ -62,7 +69,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }
-      router.push("/");
+      router.push(redirectTo);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Authentication failed.");
     } finally {
