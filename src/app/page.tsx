@@ -12,6 +12,7 @@ import Reveal from "./components/Reveal";
 import StaggerCards, { type StaggerCardItem } from "./components/StaggerCards";
 import HeroSlider from "./components/HeroSlider";
 import SlideCarousel, { type SlideItem } from "./components/SlideCarousel";
+import CoursePrice from "./components/CoursePrice";
 
 const STAFFING_HIGHLIGHTS = [
   "10+ lakh candidate database across roles and experience levels",
@@ -156,7 +157,7 @@ export default async function HomePage() {
             <p className="mt-1 text-ink/60">Courses we offer.</p>
           </Reveal>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {courses.map((c, i) => (
+            {courses.slice(0, 6).map((c, i) => (
               <Reveal key={c.id} delay={i * 80}>
                 <Link
                   href={`/courses/${c.slug}`}
@@ -172,13 +173,21 @@ export default async function HomePage() {
                       />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/0 to-transparent" />
+                    {c.mrp && c.mrp > c.price && (
+                      <span className="absolute right-3 top-3 rounded-full bg-signal px-2.5 py-1 text-xs font-bold text-navy shadow-md">
+                        {Math.round(((c.mrp - c.price) / c.mrp) * 100)}% OFF
+                      </span>
+                    )}
                   </div>
                   <div className="p-6">
                     <h3 className="font-semibold text-navy transition-colors group-hover:text-signal-600">
                       {c.title}
                     </h3>
                     <p className="mt-2 text-sm text-ink/70">{c.summary}</p>
-                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-signal-600 opacity-0 transition-all group-hover:gap-2 group-hover:opacity-100">
+                    <div className="mt-3">
+                      <CoursePrice price={c.price} mrp={c.mrp} size="sm" showBadge={false} />
+                    </div>
+                    <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-signal-600 opacity-0 transition-all group-hover:gap-2 group-hover:opacity-100">
                       Learn more <span aria-hidden>→</span>
                     </span>
                   </div>

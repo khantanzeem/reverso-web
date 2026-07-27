@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCourses } from "@/lib/content";
 import Reveal from "../components/Reveal";
 import FadeUp from "../components/FadeUp";
+import CoursePrice from "../components/CoursePrice";
 
 export const metadata = { title: "Courses — Reverso Solutions" };
 
@@ -37,17 +38,20 @@ export default async function CoursesPage() {
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/0 to-transparent" />
+                {c.mrp && c.mrp > c.price && (
+                  <span className="absolute right-3 top-3 rounded-full bg-signal px-2.5 py-1 text-xs font-bold text-navy shadow-md">
+                    {Math.round(((c.mrp - c.price) / c.mrp) * 100)}% OFF
+                  </span>
+                )}
               </div>
               <div className="p-6">
                 <h2 className="font-semibold text-navy transition-colors group-hover:text-signal-600">
                   {c.title}
                 </h2>
                 <p className="mt-2 text-sm text-ink/70">{c.summary}</p>
-                {c.price > 0 && (
-                  <p className="mt-3 text-sm font-semibold text-navy">
-                    ₹{c.price.toLocaleString("en-IN")}
-                  </p>
-                )}
+                <div className="mt-3">
+                  <CoursePrice price={c.price} mrp={c.mrp} size="sm" showBadge={false} />
+                </div>
               </div>
             </Link>
           </Reveal>

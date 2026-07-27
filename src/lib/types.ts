@@ -58,6 +58,12 @@ export interface StaffingSolution {
   active: boolean;
 }
 
+export interface CourseModule {
+  title: string;
+  duration?: string;
+  items: string[];
+}
+
 export interface Course {
   id: string;
   title: string;
@@ -65,7 +71,16 @@ export interface Course {
   categoryId: string;
   summary: string;
   description: string;
+  /** Current selling price. 0 means "contact for pricing". */
   price: number;
+  /**
+   * Original/list price before a discount. Set higher than `price` and the UI shows
+   * a strikethrough price + "X% OFF" badge. Leave unset (or equal to price) for no discount.
+   */
+  mrp?: number;
+  duration?: string;
+  prerequisites?: string;
+  curriculum?: CourseModule[];
   image: string;
   published: boolean;
   order: number;
