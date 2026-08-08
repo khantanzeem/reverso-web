@@ -9,6 +9,7 @@ import { LogOut, Trash2, AlertTriangle } from "lucide-react";
 import { auth, db } from "@/lib/firebase";
 import { useAuthUser } from "../components/useAuthUser";
 import FadeUp from "../components/FadeUp";
+import MyEnrollments from "../components/MyEnrollments";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -69,7 +70,11 @@ export default function ProfilePage() {
 
   return (
     <div className="bg-mist py-16">
-      <div className="container-x max-w-lg">
+      <div className="container-x max-w-4xl">
+        <FadeUp delay={0}>
+          <h1 className="mb-8 text-2xl font-bold text-navy sm:text-3xl">My Dashboard</h1>
+        </FadeUp>
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
         <FadeUp delay={0}>
           <div className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-lg shadow-navy/5">
             <div className="h-1.5 bg-gradient-to-r from-signal to-navy" />
@@ -163,6 +168,14 @@ export default function ProfilePage() {
             </div>
           </div>
         </FadeUp>
+
+        <FadeUp delay={100}>
+          <div>
+            <h2 className="mb-4 text-lg font-bold text-navy">My Courses</h2>
+            <MyEnrollments uid={user.uid} />
+          </div>
+        </FadeUp>
+        </div>
       </div>
     </div>
   );

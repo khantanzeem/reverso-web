@@ -1,0 +1,121 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Calendar, Clock, Video, ChevronDown, GraduationCap } from "lucide-react";
+import { getCourseBySlug } from "@/lib/content";
+import { nextClassDate, batchDaysLabel } from "@/lib/batch";
+import CourseCurriculum from "./CourseCurriculum";
+import type { Enrollment, Course } from "@/lib/types";
+
+export default function EnrollmentCard({ enrollment }: { enrollment: Enrollment }) {
+  const [course, setCourse] = useState<Course | null>(null);
+  const [showSyllabus, setShowSyllabus] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    getCourseBySlug(enrollment.courseSlug).then((c) => {
+      if (active) setCourse(c);
+    });
+    return () => {
+      active = false;
+    };
+  }, [enrollment.courseSlug]);
+
+  const next = nextClassDate({
+    days: enrollment.batchDays,
+    ...parseTime(enrollment.batchTime),
+  });
+
+  return (
+    <div className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+      <div className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center">
+        {enrollment.courseImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={enrollment.courseImage}
+            alt=""
+            className="h-16 w-16 shrink-0 rounded-lg object-cover"
+          />
+        )}
+        <div className="flex-1">
+          <span className="inline-flex items-center gap-1 rounded-full bg-signal/10 px-2.5 py-1 text-xs font-semibold text-signal-600">
+            <GraduationCap size={12} /> Enrolled
+          </span>
+          <h3 className="mt-1.5 font-semibold text-navy">{enrollment.courseTitle}</h3>
+          <p className="text-sm text-ink/60">{enrollment.batchName}</p>
+        </div>
+      </div>
+
+      <div className="grid gap-4 border-t border-black/5 bg-mist/60 p-6 sm:grid-cols-3">
+        <div className="flex items-start gap-2 text-sm">
+          <Calendar size={16} className="mt-0.5 shrink-0 text-signal-600" />
+          <div>
+            <p className="text-ink/50">Class days</p>
+            <p className="font-medium text-navy">{batchDaysLabel(enrollment.batchDays)}</p>
+          </div>
+        </div>
+        <div className="flex items-start gap-2 text-sm">
+          <Clock size={16} className="mt-0.5 shrink-0 text-signal-600" />
+          <div>
+            <p className="text-ink/50">Timing</p>
+            <p className="font-medium text-navy">{enrollment.batchTime}</p>
+          </div>
+        </div>
+        <div className="flex items-start gap-2 text-sm">
+          <Calendar size={16} className="mt-0.5 shrink-0 text-signal-600" />
+          <div>
+            <p className="text-ink/50">Next class</p>
+            <p className="font-medium text-navy">
+              {next.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" })}
+              , {next.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" })}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-black/5 p-6">
+        <a
+          href={enrollment.joinLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-primary inline-flex items-center gap-2"
+        >
+          <Video size={16} /> Join Class
+        </a>
+        {course?.curriculum && course.curriculum.length > 0 && (
+          <button
+            onClick={() => setShowSyllabus((v) => !v)}
+            className="inline-flex items-center gap-1 text-sm font-semibold text-navy transition-colors hover:text-signal-600"
+          >
+            {showSyllabus ? "Hide" : "View"} full syllabus
+            <ChevronDown size={16} className={`transition-transform ${showSyllabus ? "rotate-180" : ""}`} />
+          </button>
+        )}
+        <Link
+          href={`/courses/${enrollment.courseSlug}`}
+          className="text-sm font-semibold text-ink/60 transition-colors hover:text-signal-600"
+        >
+          View course page
+        </Link>
+      </div>
+
+      {showSyllabus && course?.curriculum && (
+        <div className="border-t border-black/5 p-6">
+          <CourseCurriculum modules={course.curriculum} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function parseTime(display: string): { startHour: number; startMinute: number } {
+  const match = display.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (!match) return { startHour: 9, startMinute: 0 };
+  let hour = parseInt(match[1], 10);
+  const minute = parseInt(match[2], 10);
+  const isPM = match[3].toUpperCase() === "PM";
+  if (isPM && hour !== 12) hour += 12;
+  if (!isPM && hour === 12) hour = 0;
+  return { startHour: hour, startMinute: minute };
+}

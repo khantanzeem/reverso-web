@@ -86,6 +86,25 @@ export interface Course {
   order: number;
 }
 
+export interface Enrollment {
+  id: string;
+  uid: string;
+  email: string;
+  courseId: string;
+  courseSlug: string;
+  courseTitle: string;
+  courseImage?: string;
+  price: number;
+  plan: "full" | "installments";
+  installments: number;
+  batchName: string;
+  batchDays: number[];
+  batchTime: string;
+  joinLink: string;
+  status: "enrolled";
+  createdAt: unknown;
+}
+
 export interface Testimonial {
   id: string;
   name: string;

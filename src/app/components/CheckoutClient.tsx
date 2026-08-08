@@ -3,10 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { CheckCircle2, Wallet, CalendarClock, Construction } from "lucide-react";
+import { CheckCircle2, Wallet, CalendarClock, PartyPopper } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { useAuthUser } from "./useAuthUser";
 import CoursePrice from "./CoursePrice";
+import { pickBatch, batchDaysLabel } from "@/lib/batch";
 import type { Course } from "@/lib/types";
 
 const INSTALLMENT_COUNT = 3;
@@ -52,21 +53,31 @@ export default function CheckoutClient({ course }: { course: Course }) {
   }
 
   if (submitted) {
+    const batch = pickBatch(`${user.uid}:${course.id}`);
     return (
       <div className="container-x max-w-lg py-16 text-center">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-signal/10 text-signal-600">
-          <Construction size={26} />
+          <PartyPopper size={26} />
         </div>
-        <h1 className="mt-5 text-2xl font-bold text-navy">Almost there!</h1>
+        <h1 className="mt-5 text-2xl font-bold text-navy">You&apos;re enrolled!</h1>
         <p className="mt-2 text-sm text-ink/60">
-          Online payment isn&apos;t live yet — TODO: payment integration needs to be completed.
-          We&apos;ve saved your request for <strong>{course.title}</strong> (
-          {plan === "full" ? "full payment" : `${INSTALLMENT_COUNT} installments`}) and our team
-          will contact you at <strong>{user.email}</strong> to complete enrollment.
+          Payment integration is still a work in progress — for now, clicking &ldquo;Proceed to
+          Payment&rdquo; enrolls you directly in <strong>{course.title}</strong> (
+          {plan === "full" ? "full payment" : `${INSTALLMENT_COUNT} installments`}). You&apos;ve
+          been placed in the <strong>{batch.name}</strong> ({batchDaysLabel(batch.days)},{" "}
+          {batch.time}).
         </p>
-        <Link href={`/courses/${course.slug}`} className="btn btn-primary mt-6">
-          Back to course
-        </Link>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <Link href="/profile" className="btn btn-primary">
+            Go to my dashboard
+          </Link>
+          <Link
+            href={`/courses/${course.slug}`}
+            className="inline-flex items-center justify-center rounded-md border border-black/10 px-5 py-2.5 text-sm font-semibold text-navy transition-all hover:-translate-y-0.5 hover:bg-mist"
+          >
+            Back to course
+          </Link>
+        </div>
       </div>
     );
   }
@@ -75,17 +86,22 @@ export default function CheckoutClient({ course }: { course: Course }) {
     setSubmitting(true);
     setError("");
     try {
-      await addDoc(collection(db, "enrollmentRequests"), {
+      const batch = pickBatch(`${user!.uid}:${course.id}`);
+      await addDoc(collection(db, "enrollments"), {
         uid: user!.uid,
         email: user!.email,
-        name: user!.displayName || "",
         courseId: course.id,
         courseSlug: course.slug,
         courseTitle: course.title,
+        courseImage: course.image || "",
         price: course.price,
         plan,
         installments: plan === "installments" ? INSTALLMENT_COUNT : 1,
-        status: "pending_payment_integration",
+        batchName: batch.name,
+        batchDays: batch.days,
+        batchTime: batch.time,
+        joinLink: batch.joinLink,
+        status: "enrolled",
         createdAt: serverTimestamp(),
       });
       setSubmitted(true);
