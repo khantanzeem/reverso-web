@@ -32,11 +32,9 @@ export default function Header({ settings }: { settings: SiteSettings | null }) 
         </div>
       )}
       <div className="container-x flex items-center justify-between py-3">
-        <Link
-          href="/"
-          className="font-heading text-xl font-bold tracking-tight text-navy transition-transform hover:scale-105"
-        >
-          REVERSO<span className="text-signal">.</span>
+        <Link href="/" className="flex items-center transition-transform hover:scale-105">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="Reverso Solutions" className="h-9 w-auto sm:h-10" />
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <Link href="/" className="nav-link">
