@@ -48,7 +48,8 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
         </div>
       </div>
       <div className="border-t border-white/10 py-4 text-center text-xs text-white/50">
-        © {new Date().getFullYear()} Reverso Solutions. All rights reserved.
+        <p>© {new Date().getFullYear()} Reverso Solutions. All rights reserved.</p>
+        <p className="mt-1">Designed and developed by Tenzefo</p>
       </div>
     </footer>
   );
