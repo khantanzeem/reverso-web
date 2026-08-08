@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { GraduationCap, ShieldCheck } from "lucide-react";
 import type { Banner } from "@/lib/types";
 import WaterRippleImage from "./WaterRippleImage";
 
@@ -92,8 +93,13 @@ export default function HeroSlider({ banners }: { banners: Banner[] }) {
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="relative"
             >
-              <div className="absolute -inset-4 rounded-2xl bg-gradient-to-tr from-signal/30 to-transparent blur-2xl" />
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl shadow-2xl">
+              {/* Glow + decorative ring behind the frame */}
+              <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-tr from-signal/40 via-signal-600/20 to-transparent blur-3xl" />
+              <div className="absolute -right-5 -top-5 h-24 w-24 rounded-2xl border-2 border-dashed border-signal/40" />
+              <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-signal-600/20 blur-xl" />
+
+              {/* Framed image */}
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-navy/40 ring-1 ring-white/10">
                 <WaterRippleImage
                   src={slide.image}
                   blueish={0.25}
@@ -102,7 +108,35 @@ export default function HeroSlider({ banners }: { banners: Banner[] }) {
                   surfaceDistortion={0.012}
                   waterDistortion={0.006}
                 />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent" />
               </div>
+
+              {/* Floating stat card */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="absolute -bottom-6 -left-6 flex items-center gap-3 rounded-2xl border border-black/5 bg-white px-4 py-3 shadow-xl shadow-navy/20"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-signal/10 text-signal-600">
+                  <GraduationCap size={20} />
+                </span>
+                <div className="leading-tight">
+                  <p className="text-sm font-bold text-navy">500+</p>
+                  <p className="text-xs text-ink/60">Students placed</p>
+                </div>
+              </motion.div>
+
+              {/* Floating badge */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="absolute -top-5 right-6 flex items-center gap-2 rounded-full bg-navy/90 px-4 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur"
+              >
+                <ShieldCheck size={14} className="text-signal" />
+                100% Placement Assistance
+              </motion.div>
             </motion.div>
           </AnimatePresence>
         )}
