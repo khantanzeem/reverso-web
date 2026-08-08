@@ -63,7 +63,7 @@ export default async function ServicesPage() {
 
       {/* Training and Placement */}
       {training && (
-        <section className="container-x py-16">
+        <section id={training.slug} className="container-x scroll-mt-20 py-16">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <Reveal>
               {training.image && (
@@ -104,7 +104,7 @@ export default async function ServicesPage() {
 
       {/* Staffing Services */}
       {staffing && (
-        <section className="bg-mist py-16">
+        <section id={staffing.slug} className="scroll-mt-20 bg-mist py-16">
           <div className="container-x">
             <div className="grid items-center gap-10 lg:grid-cols-2">
               <Reveal className="lg:order-2">
@@ -160,7 +160,7 @@ export default async function ServicesPage() {
 
       {/* Web Solutions */}
       {web && (
-        <section className="container-x py-16">
+        <section id={web.slug} className="container-x scroll-mt-20 py-16">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <Reveal>
               {web.image && (

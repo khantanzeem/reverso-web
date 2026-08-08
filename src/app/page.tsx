@@ -135,7 +135,7 @@ export default async function HomePage() {
                   <h3 className="text-lg font-semibold text-navy">{s.title}</h3>
                   <p className="mt-2 text-sm text-ink/70">{s.excerpt}</p>
                   <Link
-                    href={`/${s.slug}`}
+                    href={`/services#${s.slug}`}
                     className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-signal-600 transition-all group-hover:gap-2"
                   >
                     Know more <span aria-hidden>→</span>
