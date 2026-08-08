@@ -14,6 +14,7 @@ import {
 import { getServices, getStaffingSolutions } from "@/lib/content";
 import FadeUp from "../components/FadeUp";
 import Reveal from "../components/Reveal";
+import ScrollToHash from "../components/ScrollToHash";
 
 export const metadata = { title: "Our Services — Reverso Solutions" };
 
@@ -39,6 +40,7 @@ export default async function ServicesPage() {
 
   return (
     <article>
+      <ScrollToHash />
       {/* Hero */}
       <header className="relative overflow-hidden bg-navy py-16 text-white sm:py-20">
         <div className="blob -right-10 -top-10 h-56 w-56 bg-signal" />
