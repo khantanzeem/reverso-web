@@ -95,9 +95,17 @@ export default async function ServicesPage() {
                   <li>• Trainers with hands-on experience at top MNCs</li>
                   <li>• Dedicated placement support after course completion</li>
                 </ul>
-                <Link href="/contact" className="btn btn-primary mt-8">
-                  Enquire about training
-                </Link>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Link href="/contact" className="btn btn-primary">
+                    Enquire about training
+                  </Link>
+                  <Link
+                    href={`/services/${training.slug}`}
+                    className="inline-flex items-center justify-center rounded-md border border-black/10 px-5 py-2.5 text-sm font-semibold text-navy transition-all hover:-translate-y-0.5 hover:bg-mist"
+                  >
+                    View full details
+                  </Link>
+                </div>
               </div>
             </Reveal>
           </div>
@@ -131,9 +139,17 @@ export default async function ServicesPage() {
                     move or a company that needs to hire fast, on contract, or for a
                     hard-to-fill specialist role.
                   </p>
-                  <Link href="/contact" className="btn btn-primary mt-8">
-                    Hire talent with us
-                  </Link>
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <Link href="/contact" className="btn btn-primary">
+                      Hire talent with us
+                    </Link>
+                    <Link
+                      href={`/services/${staffing.slug}`}
+                      className="inline-flex items-center justify-center rounded-md border border-black/10 px-5 py-2.5 text-sm font-semibold text-navy transition-all hover:-translate-y-0.5 hover:bg-mist"
+                    >
+                      View full details
+                    </Link>
+                  </div>
                 </div>
               </Reveal>
             </div>
@@ -183,9 +199,17 @@ export default async function ServicesPage() {
                   website design to content strategy, SEO, and graphic design, all under one
                   roof.
                 </p>
-                <Link href="/contact" className="btn btn-primary mt-8">
-                  Start a web project
-                </Link>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Link href="/contact" className="btn btn-primary">
+                    Start a web project
+                  </Link>
+                  <Link
+                    href={`/services/${web.slug}`}
+                    className="inline-flex items-center justify-center rounded-md border border-black/10 px-5 py-2.5 text-sm font-semibold text-navy transition-all hover:-translate-y-0.5 hover:bg-mist"
+                  >
+                    View full details
+                  </Link>
+                </div>
               </div>
             </Reveal>
           </div>

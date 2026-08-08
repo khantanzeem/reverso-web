@@ -51,6 +51,13 @@ export async function getServices(): Promise<Service[]> {
   return snap.docs.map((d) => withId<Service>(d));
 }
 
+export async function getServiceBySlug(slug: string): Promise<Service | null> {
+  const snap = await getDocs(
+    query(collection(db, "services"), where("slug", "==", slug))
+  );
+  return snap.empty ? null : withId<Service>(snap.docs[0]);
+}
+
 export async function getStaffingSolutions(): Promise<StaffingSolution[]> {
   const q = query(
     collection(db, "staffingSolutions"),
