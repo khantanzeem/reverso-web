@@ -105,6 +105,18 @@ export interface Enrollment {
   createdAt: unknown;
 }
 
+export interface FormSubmission {
+  id: string;
+  type: "contact" | "free-demo";
+  name: string;
+  email: string;
+  phone: string;
+  course?: string;
+  message?: string;
+  handled: boolean;
+  createdAt: unknown;
+}
+
 export interface Testimonial {
   id: string;
   name: string;

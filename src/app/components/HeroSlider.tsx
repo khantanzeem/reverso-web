@@ -5,13 +5,11 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { GraduationCap, ShieldCheck } from "lucide-react";
 import type { Banner } from "@/lib/types";
-import WaterRippleImage from "./WaterRippleImage";
 
 const AUTOPLAY_MS = 6000;
 
 export default function HeroSlider({ banners }: { banners: Banner[] }) {
   const [index, setIndex] = useState(0);
-  const [showImage, setShowImage] = useState(false);
   const slide = banners[index];
 
   useEffect(() => {
@@ -21,16 +19,6 @@ export default function HeroSlider({ banners }: { banners: Banner[] }) {
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
   }, [banners.length]);
-
-  // The image column is hidden below `lg`; avoid mounting the WebGL ripple
-  // canvas (and its continuous render loop) when it isn't even visible.
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    setShowImage(mq.matches);
-    const onChange = () => setShowImage(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
 
   if (!slide) return null;
 
@@ -83,7 +71,7 @@ export default function HeroSlider({ banners }: { banners: Banner[] }) {
       </div>
 
       <div className="relative hidden lg:block">
-        {showImage && slide.image && (
+        {slide.image && (
           <AnimatePresence mode="wait">
             <motion.div
               key={slide.id}
@@ -100,14 +88,8 @@ export default function HeroSlider({ banners }: { banners: Banner[] }) {
 
               {/* Framed image */}
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-navy/40 ring-1 ring-white/10">
-                <WaterRippleImage
-                  src={slide.image}
-                  blueish={0.25}
-                  scale={5}
-                  illumination={0.035}
-                  surfaceDistortion={0.012}
-                  waterDistortion={0.006}
-                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={slide.image} alt="" className="h-full w-full object-cover" />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent" />
               </div>
 
