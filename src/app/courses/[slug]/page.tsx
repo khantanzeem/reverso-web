@@ -90,7 +90,7 @@ export default async function CourseDetail({
                 </Link>
               )}
               <Link
-                href={`/contact?course=${course.slug}#demo`}
+                href={`/demo?course=${course.slug}`}
                 className={
                   course.price > 0
                     ? "mt-3 flex w-full items-center justify-center rounded-md border border-black/10 px-5 py-2.5 text-sm font-semibold text-navy transition-all hover:-translate-y-0.5 hover:bg-mist"

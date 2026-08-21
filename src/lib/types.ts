@@ -25,6 +25,7 @@ export interface SiteSettings {
     services?: boolean;
     courses?: boolean;
     contact?: boolean;
+    demo?: boolean;
   };
 }
 

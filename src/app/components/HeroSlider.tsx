@@ -46,7 +46,7 @@ export default function HeroSlider({ banners }: { banners: Banner[] }) {
               <Link href={slide.ctaLink || "/courses"} className="btn btn-primary">
                 {slide.ctaText || "Explore courses"}
               </Link>
-              <Link href="/contact" className="btn btn-ghost">
+              <Link href="/demo" className="btn btn-ghost">
                 Book a free demo
               </Link>
             </div>

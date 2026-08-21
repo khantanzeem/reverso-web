@@ -8,6 +8,7 @@ const ALL_NAV = [
   { key: "services", label: "Services", href: "/services" },
   { key: "courses", label: "Courses", href: "/courses" },
   { key: "contact", label: "Contact", href: "/contact" },
+  { key: "demo", label: "Book a Demo", href: "/demo" },
 ] as const;
 
 export default function Header({ settings }: { settings: SiteSettings | null }) {
