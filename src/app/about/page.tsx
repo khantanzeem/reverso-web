@@ -197,44 +197,6 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Meet the Founder */}
-      <section className="relative overflow-hidden bg-navy py-16 text-white">
-        <div className="blob -left-10 top-0 h-64 w-64 bg-signal" />
-        <div className="container-x relative">
-          <Reveal>
-            <h2 className="text-2xl font-bold sm:text-3xl">Meet the Founder</h2>
-          </Reveal>
-          <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1fr_auto]">
-            <Reveal delay={100}>
-              <div>
-                <p className="font-semibold text-signal">Sam Dupri (Founder &amp; Director)</p>
-                <p className="mt-3 text-white/70">
-                  Founded with a vision to make telecom and IT education practical and
-                  career-oriented, our institute focuses on quality training, industry relevance,
-                  and student success. The founder believes in empowering learners with skills
-                  that truly matter in today&apos;s competitive technology landscape.
-                </p>
-                <blockquote className="mt-6 rounded-xl bg-white/5 p-5 text-sm italic text-white/90">
-                  &ldquo;Our goal is to transform learners into confident, job-ready
-                  professionals.&rdquo;
-                  <footer className="mt-2 text-xs font-semibold not-italic text-white/60">
-                    Sam Dupri — Founder &amp; Director
-                  </footer>
-                </blockquote>
-              </div>
-            </Reveal>
-            <Reveal delay={200}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="https://i.pravatar.cc/300?img=51"
-                alt=""
-                className="h-40 w-40 rounded-full object-cover ring-4 ring-white/10 sm:h-48 sm:w-48"
-              />
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
     </article>
   );
 }
