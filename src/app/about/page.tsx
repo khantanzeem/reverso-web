@@ -46,13 +46,6 @@ const GALLERY = [
   "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1000&q=80",
 ];
 
-const TEAM = [
-  { name: "John Dsuza", role: "Academic Coordinator", photo: "https://i.pravatar.cc/300?img=60" },
-  { name: "SB Rodes", role: "Student Support Manager", photo: "https://i.pravatar.cc/300?img=13" },
-  { name: "Micky Owens", role: "Technical Support Team", photo: "https://i.pravatar.cc/300?img=47" },
-  { name: "Nia Falcon", role: "Operations Team", photo: "https://i.pravatar.cc/300?img=25" },
-];
-
 export default async function AboutPage() {
   const page = await getPageBySlug("about");
 
@@ -242,37 +235,6 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Meet the Team */}
-      <section className="bg-navy-900 py-16 text-white">
-        <div className="container-x">
-          <Reveal>
-            <h2 className="text-2xl font-bold sm:text-3xl">Meet the Team</h2>
-            <p className="mt-2 max-w-2xl text-sm text-white/60">
-              Our team consists of passionate educators, coordinators, mentors, and support staff
-              who work together to ensure a smooth, supportive, and high-quality learning
-              experience for every student.
-            </p>
-          </Reveal>
-          <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
-            {TEAM.map((member, i) => (
-              <Reveal key={member.name} delay={i * 80}>
-                <div className="overflow-hidden rounded-xl bg-white/5">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={member.photo}
-                    alt=""
-                    className="aspect-square w-full object-cover"
-                  />
-                  <div className="p-4">
-                    <p className="font-semibold">{member.name}</p>
-                    <p className="text-xs text-white/60">{member.role}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
     </article>
   );
 }
