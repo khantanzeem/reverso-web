@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { CheckCircle2, Wallet, CalendarClock, PartyPopper } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { useAuthUser } from "./useAuthUser";
 import CoursePrice from "./CoursePrice";
-import { pickBatch, batchDaysLabel } from "@/lib/batch";
+import { getBatchTemplates } from "@/lib/content";
+import { pickBatch, batchDaysLabel, parseTimeLabel, FALLBACK_BATCHES, type Batch } from "@/lib/batch";
 import type { Course } from "@/lib/types";
 
 const INSTALLMENT_COUNT = 3;
@@ -21,7 +22,23 @@ export default function CheckoutClient({ course }: { course: Course }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [batches, setBatches] = useState<Batch[]>(FALLBACK_BATCHES);
   const checkoutPath = `/courses/${course.slug}/checkout`;
+
+  useEffect(() => {
+    getBatchTemplates().then((templates) => {
+      if (templates.length === 0) return;
+      setBatches(
+        templates.map((t) => ({
+          name: t.name,
+          days: t.days,
+          time: t.time,
+          joinLink: t.joinLink,
+          ...parseTimeLabel(t.time),
+        }))
+      );
+    });
+  }, []);
 
   if (loading) {
     return <div className="container-x max-w-2xl py-16" />;
@@ -53,7 +70,7 @@ export default function CheckoutClient({ course }: { course: Course }) {
   }
 
   if (submitted) {
-    const batch = pickBatch(`${user.uid}:${course.id}`);
+    const batch = pickBatch(`${user.uid}:${course.id}`, batches);
     return (
       <div className="container-x max-w-lg py-16 text-center">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-signal/10 text-signal-600">
@@ -86,7 +103,7 @@ export default function CheckoutClient({ course }: { course: Course }) {
     setSubmitting(true);
     setError("");
     try {
-      const batch = pickBatch(`${user!.uid}:${course.id}`);
+      const batch = pickBatch(`${user!.uid}:${course.id}`, batches);
       await addDoc(collection(db, "enrollments"), {
         uid: user!.uid,
         email: user!.email,

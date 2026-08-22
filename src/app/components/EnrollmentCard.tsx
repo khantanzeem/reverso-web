@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Calendar, Clock, Video, ChevronDown, GraduationCap } from "lucide-react";
 import { getCourseBySlug } from "@/lib/content";
-import { nextClassDate, batchDaysLabel } from "@/lib/batch";
+import { nextClassDate, batchDaysLabel, parseTimeLabel } from "@/lib/batch";
 import CourseCurriculum from "./CourseCurriculum";
 import type { Enrollment, Course } from "@/lib/types";
 
@@ -24,7 +24,7 @@ export default function EnrollmentCard({ enrollment }: { enrollment: Enrollment 
 
   const next = nextClassDate({
     days: enrollment.batchDays,
-    ...parseTime(enrollment.batchTime),
+    ...parseTimeLabel(enrollment.batchTime),
   });
 
   return (
@@ -107,15 +107,4 @@ export default function EnrollmentCard({ enrollment }: { enrollment: Enrollment 
       )}
     </div>
   );
-}
-
-function parseTime(display: string): { startHour: number; startMinute: number } {
-  const match = display.match(/(\d+):(\d+)\s*(AM|PM)/i);
-  if (!match) return { startHour: 9, startMinute: 0 };
-  let hour = parseInt(match[1], 10);
-  const minute = parseInt(match[2], 10);
-  const isPM = match[3].toUpperCase() === "PM";
-  if (isPM && hour !== 12) hour += 12;
-  if (!isPM && hour === 12) hour = 0;
-  return { startHour: hour, startMinute: minute };
 }

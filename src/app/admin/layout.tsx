@@ -2,13 +2,24 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, GraduationCap, MessageSquare, ShieldAlert } from "lucide-react";
+import {
+  LayoutDashboard,
+  GraduationCap,
+  MessageSquare,
+  ShieldAlert,
+  BookOpen,
+  CalendarClock,
+  FileText,
+} from "lucide-react";
 import { useIsAdmin } from "../components/useIsAdmin";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/courses", label: "Courses", icon: BookOpen },
+  { href: "/admin/batches", label: "Batches", icon: CalendarClock },
   { href: "/admin/enrollments", label: "Enrollments", icon: GraduationCap },
   { href: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
+  { href: "/admin/content", label: "Site Content", icon: FileText },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -52,7 +63,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <h1 className="mb-4 text-lg font-bold text-navy">Admin</h1>
           <nav className="flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
             {NAV.map((item) => {
-              const active = pathname === item.href;
+              const active =
+                item.href === "/admin" ? pathname === item.href : pathname?.startsWith(item.href);
               return (
                 <Link
                   key={item.href}

@@ -20,6 +20,7 @@ import type {
   Testimonial,
   Page,
   NewsPost,
+  BatchTemplate,
 } from "./types";
 
 function withId<T>(d: { id: string; data: () => Record<string, unknown> }): T {
@@ -97,6 +98,11 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
     query(collection(db, "pages"), where("slug", "==", slug))
   );
   return snap.empty ? null : withId<Page>(snap.docs[0]);
+}
+
+export async function getBatchTemplates(): Promise<BatchTemplate[]> {
+  const snap = await getDocs(query(collection(db, "batchTemplates"), orderBy("order")));
+  return snap.docs.map((d) => withId<BatchTemplate>(d));
 }
 
 export async function getNews(): Promise<NewsPost[]> {

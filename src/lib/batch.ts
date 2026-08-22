@@ -1,6 +1,7 @@
-// Simulated batch scheduling — until real batch management exists, every enrollment
-// is deterministically assigned one of these fixed batches based on course + user,
-// so the same enrollment always shows the same batch/schedule.
+// Batch scheduling. Batch templates live in Firestore (`batchTemplates`, admin-managed
+// from /admin/batches) so timing can be adjusted without a code change. Each enrollment
+// is deterministically assigned one template based on course + user, so the same
+// enrollment always shows the same batch/schedule.
 
 export interface Batch {
   name: string;
@@ -11,7 +12,8 @@ export interface Batch {
   joinLink: string;
 }
 
-export const BATCHES: Batch[] = [
+// Used only if `batchTemplates` is empty (e.g. a fresh project before seeding).
+export const FALLBACK_BATCHES: Batch[] = [
   {
     name: "Weekday Evening Batch",
     days: [1, 3, 5],
@@ -44,10 +46,22 @@ export function batchDaysLabel(days: number[]): string {
   return days.map((d) => DAY_LABELS[d]).join(", ");
 }
 
-export function pickBatch(seed: string): Batch {
+export function pickBatch(seed: string, batches: Batch[] = FALLBACK_BATCHES): Batch {
+  if (batches.length === 0) return FALLBACK_BATCHES[0];
   let hash = 0;
   for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-  return BATCHES[hash % BATCHES.length];
+  return batches[hash % batches.length];
+}
+
+export function parseTimeLabel(display: string): { startHour: number; startMinute: number } {
+  const match = display.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (!match) return { startHour: 9, startMinute: 0 };
+  let hour = parseInt(match[1], 10);
+  const minute = parseInt(match[2], 10);
+  const isPM = match[3].toUpperCase() === "PM";
+  if (isPM && hour !== 12) hour += 12;
+  if (!isPM && hour === 12) hour = 0;
+  return { startHour: hour, startMinute: minute };
 }
 
 export function nextClassDate(batch: Pick<Batch, "days" | "startHour" | "startMinute">, from = new Date()): Date {

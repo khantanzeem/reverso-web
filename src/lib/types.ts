@@ -87,6 +87,15 @@ export interface Course {
   order: number;
 }
 
+export interface BatchTemplate {
+  id: string;
+  name: string;
+  days: number[]; // 0=Sun..6=Sat
+  time: string; // human-readable, e.g. "7:00 PM – 8:30 PM IST"
+  joinLink: string;
+  order: number;
+}
+
 export interface Enrollment {
   id: string;
   uid: string;
