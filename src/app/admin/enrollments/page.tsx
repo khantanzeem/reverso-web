@@ -4,16 +4,20 @@ import { useEffect, useState } from "react";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { Pencil, Check, X } from "lucide-react";
 import { db } from "@/lib/firebase";
-import type { Enrollment } from "@/lib/types";
+import { getBatchTemplates } from "@/lib/content";
+import { batchDaysLabel } from "@/lib/batch";
+import type { Enrollment, BatchTemplate } from "@/lib/types";
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export default function AdminEnrollmentsPage() {
   const [enrollments, setEnrollments] = useState<Enrollment[] | null>(null);
+  const [batchTemplates, setBatchTemplates] = useState<BatchTemplate[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
     load();
+    getBatchTemplates().then(setBatchTemplates);
   }, []);
 
   function load() {
@@ -43,6 +47,7 @@ export default function AdminEnrollmentsPage() {
             <EditRow
               key={e.id}
               enrollment={e}
+              batchTemplates={batchTemplates}
               onCancel={() => setEditingId(null)}
               onSaved={() => {
                 setEditingId(null);
@@ -84,10 +89,12 @@ function ViewRow({ enrollment, onEdit }: { enrollment: Enrollment; onEdit: () =>
 
 function EditRow({
   enrollment,
+  batchTemplates,
   onCancel,
   onSaved,
 }: {
   enrollment: Enrollment;
+  batchTemplates: BatchTemplate[];
   onCancel: () => void;
   onSaved: () => void;
 }) {
@@ -99,6 +106,15 @@ function EditRow({
 
   function toggleDay(d: number) {
     setDays((cur) => (cur.includes(d) ? cur.filter((x) => x !== d) : [...cur, d].sort()));
+  }
+
+  function applyTemplate(templateId: string) {
+    const t = batchTemplates.find((b) => b.id === templateId);
+    if (!t) return;
+    setBatchName(t.name);
+    setBatchTime(t.time);
+    setJoinLink(t.joinLink);
+    setDays(t.days);
   }
 
   async function save() {
@@ -118,7 +134,30 @@ function EditRow({
       <p className="font-semibold text-navy">{enrollment.courseTitle}</p>
       <p className="text-sm text-ink/60">{enrollment.email}</p>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      {batchTemplates.length > 0 && (
+        <label className="mt-4 grid gap-1.5 text-sm font-medium text-navy">
+          Move to an existing batch
+          <select
+            defaultValue=""
+            onChange={(e) => e.target.value && applyTemplate(e.target.value)}
+            className="input"
+          >
+            <option value="" disabled>
+              Select a batch…
+            </option>
+            {batchTemplates.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name} — {batchDaysLabel(t.days)}, {t.time}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+
+      <p className="mt-5 mb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
+        Or set a custom schedule for just this student
+      </p>
+      <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-1.5 text-sm font-medium text-navy">
           Batch name
           <input
