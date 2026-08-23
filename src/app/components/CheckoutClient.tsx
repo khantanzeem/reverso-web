@@ -114,6 +114,7 @@ export default function CheckoutClient({ course }: { course: Course }) {
         price: course.price,
         plan,
         installments: plan === "installments" ? INSTALLMENT_COUNT : 1,
+        type: "live",
         batchName: batch.name,
         batchDays: batch.days,
         batchTime: batch.time,

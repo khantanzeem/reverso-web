@@ -34,6 +34,7 @@ const NAV_TOGGLES: { key: keyof NonNullable<SiteSettings["nav"]>; label: string 
   { key: "courses", label: "Courses" },
   { key: "contact", label: "Contact" },
   { key: "demo", label: "Book a Demo" },
+  { key: "videoCourses", label: "Downloadable Courses" },
 ];
 
 const SHORTCUTS = [

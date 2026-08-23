@@ -5,18 +5,18 @@ import Link from "next/link";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { Plus, Pencil, Trash2, Video } from "lucide-react";
 import { db } from "@/lib/firebase";
-import type { Course } from "@/lib/types";
+import type { VideoCourse } from "@/lib/types";
 
-export default function AdminCoursesPage() {
-  const [courses, setCourses] = useState<Course[] | null>(null);
+export default function AdminVideoCoursesPage() {
+  const [courses, setCourses] = useState<VideoCourse[] | null>(null);
 
   useEffect(() => {
     load();
   }, []);
 
   function load() {
-    getDocs(collection(db, "courses")).then((snap) => {
-      const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Course);
+    getDocs(collection(db, "videoCourses")).then((snap) => {
+      const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as VideoCourse);
       list.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
       setCourses(list);
     });
@@ -24,7 +24,7 @@ export default function AdminCoursesPage() {
 
   async function handleDelete(id: string, title: string) {
     if (!confirm(`Delete "${title}"? This can't be undone.`)) return;
-    await deleteDoc(doc(db, "courses", id));
+    await deleteDoc(doc(db, "videoCourses", id));
     load();
   }
 
@@ -32,11 +32,13 @@ export default function AdminCoursesPage() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-navy">Courses</h2>
-          <p className="mt-1 text-sm text-ink/60">Manage pricing, syllabus, and publish status.</p>
+          <h2 className="text-xl font-bold text-navy">Downloadable Courses</h2>
+          <p className="mt-1 text-sm text-ink/60">
+            Self-paced recorded video courses — separate from live, batch-based courses.
+          </p>
         </div>
         <Link
-          href="/admin/courses/new"
+          href="/admin/video-courses/new"
           className="inline-flex items-center gap-1.5 rounded-md bg-navy px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy/90"
         >
           <Plus size={14} /> Add course
@@ -45,6 +47,11 @@ export default function AdminCoursesPage() {
 
       <div className="mt-6 space-y-3">
         {courses === null && <p className="text-sm text-ink/50">Loading…</p>}
+        {courses?.length === 0 && (
+          <p className="rounded-xl border border-dashed border-black/10 bg-white p-6 text-center text-sm text-ink/50">
+            No downloadable courses yet.
+          </p>
+        )}
         {courses?.map((c) => (
           <div
             key={c.id}
@@ -66,13 +73,13 @@ export default function AdminCoursesPage() {
             </div>
             <div className="flex shrink-0 gap-2">
               <Link
-                href={`/admin/courses/${c.id}/videos`}
+                href={`/admin/video-courses/${c.id}/videos`}
                 className="inline-flex items-center gap-1 rounded-md border border-black/10 px-2.5 py-1.5 text-xs font-semibold text-navy hover:bg-mist"
               >
                 <Video size={12} /> Videos
               </Link>
               <Link
-                href={`/admin/courses/${c.id}`}
+                href={`/admin/video-courses/${c.id}`}
                 className="inline-flex items-center gap-1 rounded-md border border-black/10 px-2.5 py-1.5 text-xs font-semibold text-navy hover:bg-mist"
               >
                 <Pencil size={12} /> Edit

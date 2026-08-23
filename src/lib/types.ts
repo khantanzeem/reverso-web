@@ -26,6 +26,7 @@ export interface SiteSettings {
     courses?: boolean;
     contact?: boolean;
     demo?: boolean;
+    videoCourses?: boolean;
   };
 }
 
@@ -87,6 +88,37 @@ export interface Course {
   order: number;
 }
 
+/**
+ * A self-paced, recorded video course — distinct from `Course` (live, batch-based
+ * training). No batches, no join links: purchase unlocks a video playlist.
+ */
+export interface VideoCourse {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  description: string;
+  price: number;
+  mrp?: number;
+  image: string;
+  published: boolean;
+  order: number;
+}
+
+/**
+ * Public lesson metadata — safe to send to any client, logged in or not.
+ * Deliberately has NO video ID/URL: that only ever gets resolved server-side,
+ * per request, after checking enrollment (see /api/lesson-video).
+ */
+export interface CourseLesson {
+  id: string;
+  title: string;
+  duration?: string;
+  /** Free-preview lessons are watchable by anyone, no enrollment needed. */
+  isPreview: boolean;
+  order: number;
+}
+
 export interface BatchTemplate {
   id: string;
   name: string;
@@ -107,10 +139,12 @@ export interface Enrollment {
   price: number;
   plan: "full" | "installments";
   installments: number;
-  batchName: string;
-  batchDays: number[];
-  batchTime: string;
-  joinLink: string;
+  /** "live" (default, batch/schedule based) or "video" (self-paced recorded course, no batch). */
+  type?: "live" | "video";
+  batchName?: string;
+  batchDays?: number[];
+  batchTime?: string;
+  joinLink?: string;
   status: "enrolled";
   createdAt: unknown;
 }

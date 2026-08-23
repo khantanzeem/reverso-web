@@ -7,6 +7,7 @@ const ALL_NAV = [
   { key: "about", label: "About", href: "/about" },
   { key: "services", label: "Services", href: "/services" },
   { key: "courses", label: "Courses", href: "/courses" },
+  { key: "videoCourses", label: "Downloadable Courses", href: "/downloadable-courses" },
   { key: "contact", label: "Contact", href: "/contact" },
   { key: "demo", label: "Book a Demo", href: "/demo" },
 ] as const;

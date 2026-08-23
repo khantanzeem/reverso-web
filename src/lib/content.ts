@@ -21,6 +21,7 @@ import type {
   Page,
   NewsPost,
   BatchTemplate,
+  VideoCourse,
 } from "./types";
 
 function withId<T>(d: { id: string; data: () => Record<string, unknown> }): T {
@@ -98,6 +99,23 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
     query(collection(db, "pages"), where("slug", "==", slug))
   );
   return snap.empty ? null : withId<Page>(snap.docs[0]);
+}
+
+export async function getVideoCourses(): Promise<VideoCourse[]> {
+  const q = query(
+    collection(db, "videoCourses"),
+    where("published", "==", true),
+    orderBy("order")
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => withId<VideoCourse>(d));
+}
+
+export async function getVideoCourseBySlug(slug: string): Promise<VideoCourse | null> {
+  const snap = await getDocs(
+    query(collection(db, "videoCourses"), where("slug", "==", slug))
+  );
+  return snap.empty ? null : withId<VideoCourse>(snap.docs[0]);
 }
 
 export async function getBatchTemplates(): Promise<BatchTemplate[]> {

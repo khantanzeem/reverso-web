@@ -10,12 +10,14 @@ import {
   BookOpen,
   CalendarClock,
   FileText,
+  PlayCircle,
 } from "lucide-react";
 import { useIsAdmin } from "../components/useIsAdmin";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/courses", label: "Courses", icon: BookOpen },
+  { href: "/admin/video-courses", label: "Downloadable Courses", icon: PlayCircle },
   { href: "/admin/batches", label: "Batches", icon: CalendarClock },
   { href: "/admin/enrollments", label: "Enrollments", icon: GraduationCap },
   { href: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },

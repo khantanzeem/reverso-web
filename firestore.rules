@@ -16,8 +16,14 @@ service cloud.firestore {
     match /services/{doc}       { allow read: if true; allow write: if isAdmin(); }
     match /staffingSolutions/{doc} { allow read: if true; allow write: if isAdmin(); }
     match /batchTemplates/{doc}   { allow read: if true; allow write: if isAdmin(); }
+
+    // ---- Course videos: contains real video IDs. Never publicly readable — students
+    // only ever get a video ID back from the server-verified /api/lesson-video route,
+    // which uses the Admin SDK (bypasses these rules) after checking enrollment. ----
+    match /courseVideos/{courseId} { allow read, write: if isAdmin(); }
     match /courseCategories/{doc} { allow read: if true; allow write: if isAdmin(); }
     match /courses/{doc}        { allow read: if true; allow write: if isAdmin(); }
+    match /videoCourses/{doc}   { allow read: if true; allow write: if isAdmin(); }
     match /gallery/{doc}        { allow read: if true; allow write: if isAdmin(); }
     match /testimonials/{doc}   { allow read: if true; allow write: if isAdmin(); }
     match /news/{doc}           { allow read: if true; allow write: if isAdmin(); }

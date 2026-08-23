@@ -32,7 +32,8 @@ export default function AdminEnrollmentsPage() {
     <div>
       <h2 className="text-xl font-bold text-navy">Enrollments</h2>
       <p className="mt-1 text-sm text-ink/60">
-        Everyone currently enrolled, with their batch, schedule, and join link.
+        Everyone currently enrolled — live courses show batch/schedule, downloadable courses just
+        show video access.
       </p>
 
       <div className="mt-6 space-y-4">
@@ -43,7 +44,9 @@ export default function AdminEnrollmentsPage() {
           </p>
         )}
         {enrollments?.map((e) =>
-          editingId === e.id ? (
+          e.type === "video" ? (
+            <VideoRow key={e.id} enrollment={e} />
+          ) : editingId === e.id ? (
             <EditRow
               key={e.id}
               enrollment={e}
@@ -59,6 +62,23 @@ export default function AdminEnrollmentsPage() {
           )
         )}
       </div>
+    </div>
+  );
+}
+
+function VideoRow({ enrollment }: { enrollment: Enrollment }) {
+  return (
+    <div className="flex flex-col gap-4 rounded-2xl border border-black/5 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0">
+        <p className="font-semibold text-navy">{enrollment.courseTitle}</p>
+        <p className="text-sm text-ink/60">
+          {enrollment.email} · ₹{enrollment.price?.toLocaleString("en-IN")}
+        </p>
+        <p className="mt-1 text-xs text-ink/50">Downloadable course — self-paced, no batch</p>
+      </div>
+      <span className="inline-flex shrink-0 items-center rounded-full bg-signal/10 px-3 py-1 text-xs font-semibold text-signal-600">
+        Video access
+      </span>
     </div>
   );
 }
