@@ -4,6 +4,7 @@ import { MotionConfig } from "framer-motion";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import FloatingContact from "./components/FloatingContact";
 import { getSiteSettings } from "@/lib/content";
 
 // Revalidate every 60s so content edits appear without a redeploy.
@@ -36,6 +37,7 @@ export default async function RootLayout({
           <Header settings={settings} />
           <main className="min-h-[60vh]">{children}</main>
           <Footer settings={settings} />
+          <FloatingContact settings={settings} />
         </MotionConfig>
       </body>
     </html>
